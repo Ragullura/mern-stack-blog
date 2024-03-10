@@ -24,3 +24,16 @@ app.listen(3000,()=>{
 
 app.use('/api/user', userRoutes );
 app.use('/api/auth',authRoutes);
+
+//add  middleware to handle any request that comes into 
+//the server and send back a response if it doesn't find anything
+//this code add as a next  parameter in the error handling middleware function
+app.use((err,req,res,next) =>{
+    const statusCode =err.statusCode || 500;
+    const message = err.message||"Internal Server Error";
+    res.status(statusCode).json({ 
+          success:false,
+          statusCode,
+          message,
+        })
+})

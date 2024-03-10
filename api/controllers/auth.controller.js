@@ -1,12 +1,15 @@
 import User from "../models/user.model.js"; 
 import bcryptjs from  'bcryptjs';
+import { errorHandler } from "../utils/error.js";
 
-export const signup =async (req,res) =>{
+export const signup =async (req,res,next) =>{
    const {username,email,password} = req.body; 
 
     // check  if user already exists in the database
    if(!username || !email || !password || username==='' || email ==='' || password===''){
-    return res.status(400).json({msg:'Please fill out all fields.'});
+    /* return res.status(400).json({msg:'Please fill out all fields.'}); */
+    //added from errorhandler
+    next(errorHandler(400,"Please fill out all fields"));
    }
 
    // hashing our password  before saving it to the database
@@ -27,7 +30,8 @@ export const signup =async (req,res) =>{
    //return a success message for our knowledge
    res.json("New account has been created successfully.");
    } catch (error) {
-    res.status(500).json({message: error.message});
+    //added middleware here to check the error
+    next(error);
     
    }
    
