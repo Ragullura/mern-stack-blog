@@ -1,16 +1,14 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import  { useState } from 'react';
-import { Link , useNavigate } from 'react-router-dom'
+import { useDispatch,useSelector } from 'react-redux';
+import { Link , useNavigate} from 'react-router-dom'
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
 
 export default function SignIn() {
   //get  user input values ,store updated value in a state variable
   const [formData,setFormData] =useState({});
-
-  // errormessage  is used to display any error message if there are
-  const  [errorMessage, setErrorMessage]= useState(null);
-
-  //successmessage  is used to show the success message after successful submission
-  const [loading, setLoading] = useState(false);
+  const {loading,error:errorMessage} =useSelector(state => state.user); //why we  are using selector here? because we want to access 
+  const dispatch =useDispatch();
 
   //useNavigate for navigate to sign in page
   const navigate =useNavigate();
@@ -26,15 +24,11 @@ export default function SignIn() {
     e.preventDefault();
 
     if( !formData.email || !formData.password){
-      return  setErrorMessage("Please fill all fields!");
+      return  dispatch(signInFailure("Please fill all fields!"));
     }
     try {
-      //we try set loading is true
-      setLoading(true);
-
-      //set error also null
-      setErrorMessage(null);
-
+      
+      dispatch(signInStart());//dispatching action to store that we start to load the data
       //here have some problem front end run in localhost 5173
       //and back end run in localhost 3000 
       //so add proxy in vite config 
@@ -49,21 +43,20 @@ export default function SignIn() {
 
       //check same name  or email already exist
       if(data.success===false){
-        return setErrorMessage(data.message);
+        dispatch(signInFailure(data.message));
       }
 
-      //after successfully fetching data we set loading false
-      setLoading(false);
+    
 
       //once all done successfully then navigate in sign-in page
       if(res.ok){
+        dispatch(signInSuccess(data));
         navigate('/');
       }
       
     } catch (error) {
       //This error for client side network issue 
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(signInFailure(error.message));
     }
 
   }
