@@ -48,6 +48,11 @@ const userSlice=createSlice({
             state.loading = false;
             state.error = action.payload;
           },
+          signoutSuccess: (state) => {
+            state.currentUser = null;
+            state.error = null;
+            state.loading = false;
+          },
 
     },
 
@@ -63,6 +68,7 @@ export const {
     deleteUserStart,
     deleteUserSuccess,
     deleteUserFailure,
+    signoutSuccess,
 }=userSlice.actions;
 
 // The value we returned from reduceReducers is the combined reducer function that Redux Toolkit created for us. We can use
