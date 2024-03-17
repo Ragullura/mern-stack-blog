@@ -19,6 +19,10 @@ const userSchema =new mongoose.Schema({
         type:String,
         default:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fempty-profile-picture&psig=AOvVaw14zL4liOj0ihNSPLHkrFZk&ust=1710412162228000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCPiK-4SE8YQDFQAAAAAdAAAAABAE"
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+      },
     
 }, {timestamps:true}
 );
