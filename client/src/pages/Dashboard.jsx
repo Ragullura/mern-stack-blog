@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {useLocation} from 'react-router-dom';
 import DashSidebar from '../components/DashSidebar';
 import DashProfile from '../components/DashProfile';
+import DashPosts from '../components/DashPosts';
 
 export default function Dashboard() {
   const location = useLocation(); //uselocation is used  to access the current URL of our application. 
@@ -25,6 +26,8 @@ export default function Dashboard() {
       {/* Profile and.... */}
       {/* make a condtion */}
       {tab === 'profile' && <DashProfile/> }
+      {/* posts... */}
+      {tab === 'posts' && <DashPosts />}
   </div>
   );
 }

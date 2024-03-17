@@ -1,14 +1,20 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import {HiArrowSmRight, HiUser} from  'react-icons/hi';
+import {HiArrowSmRight, HiDocumentText, HiUser} from  'react-icons/hi';
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+
+
+
 export default function DashSidebar() {
     const location = useLocation(); //uselocation is used  to access the current URL of our application. 
     //It gives us an object with properties such as pathname
     const dispatch = useDispatch();
     const [tab,setTab] =useState('') //useState  hook is used to declare a state variable for tab and setTab which allows us to update that value, search and hash that we can utilize in
+    const { currentUser } = useSelector((state) => state.user); 
+
     useEffect(() => {
       const urlParams =new  URLSearchParams(location.search);//URLSearchParams allows you to work with query parameters in a URL.
       const tabFromUrl = urlParams.get('tab');// this will return the value of "?tab=orders" if it exists in the URL or null
@@ -34,24 +40,52 @@ export default function DashSidebar() {
       }
     };
   return (
-    <Sidebar className="w-full md:w-56">
-        <Sidebar.Items>
-            <Sidebar.ItemGroup>
-                <Link to='/dashboard?tab=profile'>
-                <Sidebar.Item  
-                active={tab === 'profile'} 
-                icon={HiUser} 
-                label={"User"} 
-                labelColor='dark' as='div' >
-                    Profile
-                </Sidebar.Item>
-                </Link>
-                <Sidebar.Item  icon={HiArrowSmRight} className='cursor-pointer' onClick={handleSignout} >
-                    Sign Out
-                </Sidebar.Item>
-                
-            </Sidebar.ItemGroup>
-        </Sidebar.Items>
+    <Sidebar className='w-full md:w-56'>
+      <Sidebar.Items>
+        <Sidebar.ItemGroup className='flex flex-col gap-1'>
+          {currentUser && currentUser.isAdmin && (
+            <Link to='/dashboard?tab=dash'>
+              <Sidebar.Item
+                active={tab === 'dash' || !tab}
+                icon={HiChartPie}
+                as='div'
+              >
+                Dashboard
+              </Sidebar.Item>
+            </Link>
+          )}
+          <Link to='/dashboard?tab=profile'>
+            <Sidebar.Item
+              active={tab === 'profile'}
+              icon={HiUser}
+              label={currentUser.isAdmin ? 'Admin' : 'User'}
+              labelColor='dark'
+              as='div'
+            >
+              Profile
+            </Sidebar.Item>
+          </Link>
+          {currentUser.isAdmin && (
+            <Link to='/dashboard?tab=posts'>
+              <Sidebar.Item
+                active={tab === 'posts'}
+                icon={HiDocumentText}
+                as='div'
+              >
+                Posts
+              </Sidebar.Item>
+            </Link>
+          )}
+          
+          <Sidebar.Item
+            icon={HiArrowSmRight}
+            className='cursor-pointer'
+            onClick={handleSignout}
+          >
+            Sign Out
+          </Sidebar.Item>
+        </Sidebar.ItemGroup>
+      </Sidebar.Items>
     </Sidebar>
   )
 }
