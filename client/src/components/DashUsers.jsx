@@ -46,7 +46,7 @@ export default function DashUsers() {
     }
   };
 
- /*  const handleDeleteUser = async () => {
+   const handleDeleteUser = async () => {
     try {
         const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
             method: 'DELETE',
@@ -62,7 +62,7 @@ export default function DashUsers() {
         console.log(error.message);
     }
   };
- */
+ 
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
       {currentUser.isAdmin && users.length > 0 ? (
@@ -100,10 +100,10 @@ export default function DashUsers() {
                   </Table.Cell>
                   <Table.Cell>
                     <span
-                     /*  onClick={() => {
+                      onClick={() => {
                         setShowModal(true);
                         setUserIdToDelete(user._id);
-                      }} */
+                      }} 
                       className='font-medium text-red-500 hover:underline cursor-pointer'
                     >
                       Delete
