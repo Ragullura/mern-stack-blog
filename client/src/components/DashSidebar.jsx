@@ -1,6 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import {HiArrowSmRight, HiDocumentText, HiUser} from  'react-icons/hi';
+import {HiArrowSmRight,HiChartPie,HiDocumentText , HiUser} from  'react-icons/hi';
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
@@ -47,7 +47,7 @@ export default function DashSidebar() {
             <Link to='/dashboard?tab=dash'>
               <Sidebar.Item
                 active={tab === 'dash' || !tab}
-                icon={HiChartPie}
+                icon={HiChartPie }
                 as='div'
               >
                 Dashboard
