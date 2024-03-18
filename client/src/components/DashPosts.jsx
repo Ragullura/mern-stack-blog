@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
-
+  const [showMore, setShowMore] = useState(true);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -14,7 +14,7 @@ export default function DashPosts() {
         if (res.ok) {
           setUserPosts(data.posts);
           if (data.posts.length < 9) {
-            setShowMore(false);
+             setShowMore(false); 
           }
         }
       } catch (error) {
@@ -25,6 +25,48 @@ export default function DashPosts() {
       fetchPosts();
     }
   }, [currentUser._id]);
+
+/* handle show more function */
+const handleShowMore = async () => {
+  const startIndex = userPosts.length;
+  try {
+    const res = await fetch(
+      `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setUserPosts((prev) => [...prev, ...data.posts]);
+      if (data.posts.length < 9) {
+        setShowMore(false);
+      }
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const handleDeletePost = async () => {
+  setShowModal(false);
+  try {
+    const res = await fetch(
+      `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
+      {
+        method: 'DELETE',
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      console.log(data.message);
+    } else {
+      setUserPosts((prev) =>
+        prev.filter((post) => post._id !== postIdToDelete)
+      );
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 
   return (
     <div
@@ -69,7 +111,7 @@ export default function DashPosts() {
                   <Table.Cell>
                     <span
                       onClick={() => {
-                        setShowModal(true);
+                        /* setShowModal(true); */
                         setPostIdToDelete(post._id);
                       }}
                       className='font-medium text-red-500 hover:underline cursor-pointer'
@@ -89,7 +131,14 @@ export default function DashPosts() {
               </Table.Body>
             ))}
           </Table>
-         
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className='w-full text-teal-500 self-center text-sm py-7'
+            >
+              Show more
+            </button>
+          )}
         </>
         ) : (
           <p>You have no posts yet!</p>
