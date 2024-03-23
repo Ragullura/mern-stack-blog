@@ -21,5 +21,24 @@ export const createComment =async (req,res,next) =>{
         next(error);
       }
 
-}
+};
+
+/*-------- display the comment-------- */
+
+export const getPostComments = async (req, res, next) => {
+    try {
+        const comments = await Comment.find({ postId: req.params.postId }).sort({
+            createdAt: -1,
+          }); //search by the postId 
+        
+        /* for each comment we need to attach the username so that we can show who made the comment*/
+        res.status(200).json(comments);
+        
+    } catch (error) {
+        next(error)
+    }
+
+};
+
+
 

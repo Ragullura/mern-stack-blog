@@ -131,5 +131,20 @@ export const getUsers = async (req, res, next) => {
   }
 };
 
+/* --------------GetUser comment---------- */
+export const getUser = async (req, res, next) => {
+
+  try {
+    const user =await User.findById(req.params.userId);
+    if(!user){
+      return next(errorHandler(404, 'User not found'));
+    }
+    const {password,...rest} =user._doc;//here  we are excluding the password from the response body
+    res.status(200).json(rest);//json  returns data in json format
+  } catch (error) {
+    next(error); 
+  }
+};
+
 
 
