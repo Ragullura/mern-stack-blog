@@ -48,41 +48,43 @@ export default function Header() {
             <AiOutlineSearch/>
         </Button>
         <div className='flex gap-2 md:order-2'>
-            <Button className='w-12 h-10 hidden sm:inline' color='gray' pill onClick={()=>dispatch(toggleTheme())}>
-               {theme ==='light' ? <FaSun/> : <FaMoon/>}
-            </Button>
-            {currentUser ? (
-                <Dropdown 
-                arrowIcon={false}
-                inline
-                label={
-                    <Avatar alt='user'
-                    img={currentUser.profilePicture} rounded />
-                }
-                >
-                    <Dropdown.Header>
-                        <span className='block text-sm font-bold'>@{currentUser.username}</span>
-                        <span className='block text-sm font-semibold truncate'>{currentUser.email}</span>
-                    </Dropdown.Header>
-                    <Link to='/dashboard?tab=profile'>
-                        <Dropdown.Item>Profile</Dropdown.Item>
-                    </Link>
-                    <Dropdown.Divider />
-                    <Dropdown.Item onClick={handleSignout}>Sign Out</Dropdown.Item>
-                </Dropdown>
-            ):
-            (
-                <Link to='/sign-in'>
-            <Button  gradientDuoTone='purpleToBlue' outline pill>
-               Sign In
-            </Button>
-            </Link>
-            )
-
+        <Button
+          className='w-12 h-10 hidden sm:inline'
+          color='gray'
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === 'light' ? <FaSun /> : <FaMoon />}
+        </Button>
+        {currentUser ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt='user' img={currentUser.profilePicture} rounded />
             }
-            
-            <Navbar.Toggle />
-        </div>
+          >
+            <Dropdown.Header>
+              <span className='block text-sm'>@{currentUser.username}</span>
+              <span className='block text-sm font-medium truncate'>
+                {currentUser.email}
+              </span>
+            </Dropdown.Header>
+            <Link to={'/dashboard?tab=profile'}>
+              <Dropdown.Item>Profile</Dropdown.Item>
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <Link to='/sign-in'>
+            <Button gradientDuoTone='purpleToBlue' outline>
+              Sign In
+            </Button>
+          </Link>
+        )}
+        <Navbar.Toggle />
+      </div>
         <Navbar.Collapse>
                 <Navbar.Link active={path ==="/"} as={'div'}>
                     <Link to="/">

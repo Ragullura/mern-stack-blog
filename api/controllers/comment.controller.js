@@ -112,4 +112,34 @@ export const deleteComment = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
+
+/* getcomments and show to the admin */
+
+export const getcomments = async (req, res, next) => {
+  if (!req.user.isAdmin)
+  return next(errorHandler(403, 'You are not allowed to get all comments'));
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0; //using parseInt for  safety reasons and also  it will give us a number instead of string
+    const limit = parseInt(req.query.limit) || 9; //we set  a default value of 9 for limit
+    const sortDirection = req.query.sort === 'desc' ? -1 : 1;
+    const comments = await Comment.find()
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+    const totalComments = await Comment.countDocuments();
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );//here get  the date from yesterday
+    const lastMonthComments = await Comment.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    }); //here get  the number of comments in the last month
+    res.status(200).json({
+      comments,totalComments, lastMonthComments });
+  } catch (error) {
+    next(error);
+  }
+};
