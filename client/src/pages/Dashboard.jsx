@@ -5,6 +5,7 @@ import DashProfile from '../components/DashProfile';
 import DashPosts from '../components/DashPosts';
 import DashUsers from '../components/DashUsers';
 import DashComments from '../components/DashComments';
+import DashboardComp from '../components/DashboardComp';
 
 export default function Dashboard() {
   const location = useLocation(); //uselocation is used  to access the current URL of our application. 
@@ -35,6 +36,8 @@ export default function Dashboard() {
       {tab === 'users' && <DashUsers />}
       {/* comments  */}
       {tab === 'comments' && <DashComments />}
+      {/* dashboard comp */}
+      {tab === 'dash' && <DashboardComp />}
   </div>
   );
 }
