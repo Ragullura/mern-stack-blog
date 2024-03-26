@@ -1,7 +1,7 @@
 import { Footer } from "flowbite-react"
 import { Link } from "react-router-dom"
 import {BsFacebook, BsInstagram, BsTwitterX, BsGithub,BsYoutube} from 'react-icons/bs';
-
+import image from  "../assets/Logopbg.png";
 export default function Footercom() {
   return <Footer container className="border border-t-8 border-teal-500">
     {/* first Main container */}
@@ -14,9 +14,15 @@ export default function Footercom() {
             <div className="mt-5">
             <Link to='/' className='self-center whitespace-nowrap text-lg 
             sm:text-xl font-semibold dark:text-white'>
-            <span className='px-2 py-1 bg-gradient-to-t from-indigo-500 
-            via-purple-500 to-pink-500 rounded-lg text-white '>Lura's</span>
-             Blog
+                <div className='flex'>
+            <img src={image} alt="Luras Logo" 
+             className='w-16 h-16 dark:caret-lime-50' />
+             <span className='flex items-center text-2xl'>
+             <span className='px-2 py-1 text-orange-500 font-extrabold font-serif  '>
+            Lura's
+            </span>
+            Blog</span>
+            </div>
             </Link>
             </div>
 
