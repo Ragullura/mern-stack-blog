@@ -35,7 +35,7 @@ export default function Footercom() {
                     target="_blank"
                     rel="noopener noreferrer"
                     >
-                        my project
+                        Contact Us
                     </Footer.Link>
                     <Footer.Link href='https://mern-project-auth.onrender.com/'
                     target="_blank"
