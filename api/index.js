@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.route.js';
 import postRoutes from './routes/post.route.js';
 import commentRoutes from './routes/comment.route.js';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ mongoose.connect(process.env.MONGO)
     .catch((err)=>{
         console.error(err);
     });
+const __dirname = path.resolve();
 const app=express();
 app.use(express.json());
 app.use(cookieParser()); //it is  used to work with cookies in req.cookies
@@ -29,6 +31,13 @@ app.use('/api/user', userRoutes );
 app.use('/api/auth',authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
+
+app.use(express.static(path.join(__dirname, '/client/dist')));//we  are telling the server that if anyone tries to access and it is install using vite
+//for that we use dist 
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 //add  middleware to handle any request that comes into 
 //the server and send back a response if it doesn't find anything
